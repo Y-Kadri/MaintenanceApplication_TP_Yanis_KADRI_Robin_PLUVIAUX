@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sqli.isc.iut.courses.exceptions.TooManyCustomersInBarException;
-
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 
@@ -39,7 +37,7 @@ public class firstStorySteps {
   }
 
   @Given("^they can't enter$")
-  public void they_cant_enter() throws TooManyCustomersInBarException {
+  public void they_cant_enter() {
     // the number of customers in the bar stays the same
     assertEquals(numberOfDefaultCustomers, bar.getCustomersInTheBar().size());
 
