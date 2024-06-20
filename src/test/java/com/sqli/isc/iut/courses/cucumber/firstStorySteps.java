@@ -1,52 +1,48 @@
 package com.sqli.isc.iut.courses.cucumber;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import com.sqli.isc.iut.courses.exceptions.TooManyCustomersInBarException;
+
 import io.cucumber.java.en.Given;
-
-class Bar {
-  private int places;
-  private List<String> customers;
-
-  public Bar(int places) {
-    this.places = places;
-  }
-
-  public int getPlaces() {
-    return places;
-  }
-
-  public List<String> getCustomers() {
-    return customers;
-  }
-
-}
+import io.cucumber.java.en.When;
 
 public class firstStorySteps {
   private Bar bar;
+  private int numberOfDefaultCustomers;
 
-  @Given("^a bar I just entered with 10 places$")
-  public void setup() {
-    bar = new Bar(10);
+  @Given("a bar I just entered with {int} places and {int} customers")
+  public void setup(int arg1, int arg2) {
+    this.numberOfDefaultCustomers = arg2;
+    bar = new Bar(arg1);
+    List<String> customers = new ArrayList<String>();
+
+    // fill the bar with 9 customers
+    for (int i = 0; i < arg2; i++) {
+      customers.add("customer" + i);
+    }
+    bar.addCustomers(customers);
   }
 
-  @Given("^(\\d+) customers enter but there is only (\\d+) place left$")
-  public void addCustomers(int arg1, int arg2) {
-    // fill the bar with arg2 customers
-    int numberOfCustomer = bar.getPlaces() - arg2;
+  @When("^(\\d+) customers enter$")
+  public void addCustomers(int arg1) {
+    List<String> customers = new ArrayList<String>();
 
-    for (int i = 0; i < numberOfCustomer; i++) {
-      bar.getCustomers().add("customer" + i);
-    }
-
-    // add arg1 customers to the bar
+    // fill the bar with arg1 customers
     for (int i = 0; i < arg1; i++) {
-      bar.getCustomers().add("customer" + i);
+      customers.add("toto" + i);
     }
+    bar.addCustomers(customers);
   }
 
   @Given("^they can't enter$")
-  public void they_cant_enter() throws Throwable{
+  public void they_cant_enter() throws TooManyCustomersInBarException {
+    // the number of customers in the bar stays the same
+    assertEquals(numberOfDefaultCustomers, bar.getCustomersInTheBar().size());
+
   }
 
 }
