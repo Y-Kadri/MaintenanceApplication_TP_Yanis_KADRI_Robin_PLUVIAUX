@@ -11,6 +11,7 @@ import io.cucumber.java.en.When;
 public class firstStorySteps {
   private Bar bar;
   private int numberOfDefaultCustomers;
+  private boolean canEnter;
 
   @Given("a bar I just entered with {int} places and {int} customers")
   public void setup(int arg1, int arg2) {
@@ -33,14 +34,14 @@ public class firstStorySteps {
     for (int i = 0; i < arg1; i++) {
       customers.add("toto" + i);
     }
-    bar.addCustomers(customers);
+    this.canEnter = bar.addCustomers(customers);
   }
 
   @Given("^they can't enter$")
   public void they_cant_enter() {
     // the number of customers in the bar stays the same
-    assertEquals(numberOfDefaultCustomers, bar.getCustomersInTheBar().size());
-
+    assertEquals(numberOfDefaultCustomers, bar.getCustomers().size());
+    assertEquals(false, this.canEnter);
   }
 
 }

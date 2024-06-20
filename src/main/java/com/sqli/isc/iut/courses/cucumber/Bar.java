@@ -7,18 +7,19 @@ public class Bar {
 
     private int numberOfPlaces;
 
-    List<String> customersInTheBar = new ArrayList<String>();
+    List<String> customers = new ArrayList<String>();
 
     public Bar(int numberOfPlaces) {
         this.numberOfPlaces = numberOfPlaces;
     }
 
-    public void addCustomers(List<String> customers) {
-        if (customersInTheBar.size() + customersInTheBar.size() > numberOfPlaces) {
-            return;
+    public boolean addCustomers(List<String> customers) {
+        if (customers.size() + customers.size() > numberOfPlaces) {
+            return false;
         }
 
-        customersInTheBar.addAll(customers);
+        customers.addAll(customers);
+        return true;
     }
 
     public int getNumberOfPlaces() {
@@ -29,11 +30,11 @@ public class Bar {
         this.numberOfPlaces = numberOfPlaces;
     }
 
-    public List<String> getCustomersInTheBar() {
-        return customersInTheBar;
+    public List<String> getCustomers() {
+        return customers;
     }
 
-    public void setCustomersInTheBar(List<String> customersInTheBar) {
-        this.customersInTheBar = customersInTheBar;
+    public void setcustomers(List<String> customers) {
+        this.customers = customers;
     }
 }
