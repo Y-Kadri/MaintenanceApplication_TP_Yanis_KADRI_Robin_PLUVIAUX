@@ -1,8 +1,7 @@
 Feature: A bar with a limited number of places
 
-  Background: A bar
-    Given a bar I just entered with 10 places and 9 customers
-
   Scenario: New customers
-    When 2 customers enter
+    Given the bar has 9 people
+    When 2 customers try to enter
     Then they can't enter
+    And the bar still has 9 customers

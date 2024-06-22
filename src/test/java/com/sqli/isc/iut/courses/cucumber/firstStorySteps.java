@@ -1,47 +1,58 @@
 package com.sqli.isc.iut.courses.cucumber;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import com.sqli.isc.iut.courses.exceptions.TooManyCustomersInBarException;
+
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class firstStorySteps {
   private Bar bar;
-  private int numberOfDefaultCustomers;
   private boolean canEnter;
+  List<String> futurCustomers = new ArrayList<>();
 
-  @Given("a bar I just entered with {int} places and {int} customers")
-  public void setup(int arg1, int arg2) {
-    this.numberOfDefaultCustomers = arg2;
-    bar = new Bar(arg1);
-    List<String> customers = new ArrayList<String>();
+  @Given("the bar has {int} people")
+    public void the_bar_has_people(int numberOfPeople) throws TooManyCustomersInBarException {
+        bar = new Bar(10);
+        List<String> presentCustomersGiven = new ArrayList<>();
 
-    // fill the bar with 9 customers
-    for (int i = 0; i < arg2; i++) {
-      customers.add("customer" + i);
+        // Actual customer
+        for (int i = 0; i < numberOfPeople; i++) {
+            presentCustomersGiven.add(String.valueOf(i + 1));
+        }
+        bar.addCustomers(presentCustomersGiven);
+
+        //Futur customer
+        for (int i = 0; i < 2; i++) {
+          futurCustomers.add("new " + String.valueOf(i + 1));
+      }
     }
-    bar.addCustomers(customers);
-  }
 
-  @When("^(\\d+) customers enter$")
-  public void addCustomers(int arg1) {
-    List<String> customers = new ArrayList<String>();
-
-    // fill the bar with arg1 customers
-    for (int i = 0; i < arg1; i++) {
-      customers.add("toto" + i);
+    @When("{int} customers try to enter")
+    public void customers_try_to_enter(int numberOfNewCustomers) {
+        try {
+            bar.addCustomers(futurCustomers);
+          
+            canEnter = true;
+        } catch (TooManyCustomersInBarException e) {
+            canEnter = false;
+        }
     }
-    this.canEnter = bar.addCustomers(customers);
-  }
 
-  @Given("^they can't enter$")
-  public void they_cant_enter() {
-    // the number of customers in the bar stays the same
-    assertEquals(numberOfDefaultCustomers, bar.getCustomers().size());
-    assertEquals(false, this.canEnter);
-  }
+    @Then("they can't enter")
+    public void they_can_t_enter() {
+        assertFalse(canEnter);
+    }
+
+    @Then("the bar still has {int} customers")
+    public void the_bar_is_fully_booked(int numberOfPeople) {
+        assertEquals(bar.getNumberOfCustomers(), numberOfPeople);
+    }
 
 }

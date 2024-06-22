@@ -1,25 +1,28 @@
 package com.sqli.isc.iut.courses.cucumber;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.sqli.isc.iut.courses.exceptions.TooManyCustomersInBarException;
 
 public class Bar {
 
     private int numberOfPlaces;
-
-    List<String> customers = new ArrayList<String>();
+    private int numberOfCustomers;
 
     public Bar(int numberOfPlaces) {
         this.numberOfPlaces = numberOfPlaces;
+        this.numberOfCustomers = 0;
     }
 
-    public boolean addCustomers(List<String> customers) {
-        if (customers.size() + customers.size() > numberOfPlaces) {
-            return false;
+    public void addCustomers(List<String> customers) throws TooManyCustomersInBarException {
+        if (numberOfCustomers + customers.size() > numberOfPlaces) {
+            throw new TooManyCustomersInBarException();
         }
 
-        customers.addAll(customers);
-        return true;
+        for (String customer: customers) {
+            numberOfCustomers++;
+        }
+        
     }
 
     public int getNumberOfPlaces() {
@@ -30,11 +33,11 @@ public class Bar {
         this.numberOfPlaces = numberOfPlaces;
     }
 
-    public List<String> getCustomers() {
-        return customers;
+    public int getNumberOfCustomers() {
+        return numberOfCustomers;
     }
 
-    public void setcustomers(List<String> customers) {
-        this.customers = customers;
+    public void setNumberOfCustomers(int numberOfCustomers) {
+        this.numberOfCustomers = numberOfCustomers;
     }
 }
