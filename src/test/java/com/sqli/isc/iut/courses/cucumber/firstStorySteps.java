@@ -12,32 +12,34 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class firstStorySteps {
+public class FirstStorySteps {
   private Bar bar;
   private boolean canEnter;
-  List<String> futurCustomers = new ArrayList<>();
+  private List<Person> futureCustomers = new ArrayList<>();
 
   @Given("the bar has {int} people")
     public void the_bar_has_people(int numberOfPeople) throws TooManyCustomersInBarException {
         bar = new Bar(10);
-        List<String> presentCustomersGiven = new ArrayList<>();
+        List<Person> presentCustomersGiven = new ArrayList<>();
 
         // Actual customer
         for (int i = 0; i < numberOfPeople; i++) {
-            presentCustomersGiven.add(String.valueOf(i + 1));
+            Person personIsAlreadyPresent = new Person(String.valueOf(i + 1), 50.0, 2);
+            presentCustomersGiven.add(personIsAlreadyPresent);
         }
         bar.addCustomers(presentCustomersGiven);
 
         //Futur customer
         for (int i = 0; i < 2; i++) {
-          futurCustomers.add("new " + String.valueOf(i + 1));
+          Person personIsAlreadyPresent = new Person("new " + String.valueOf(i + 1), 50.0, 2);
+          futureCustomers.add(personIsAlreadyPresent);
       }
     }
 
     @When("{int} customers try to enter")
     public void customers_try_to_enter(int numberOfNewCustomers) {
         try {
-            bar.addCustomers(futurCustomers);
+            bar.addCustomers(futureCustomers);
           
             canEnter = true;
         } catch (TooManyCustomersInBarException e) {
@@ -52,7 +54,7 @@ public class firstStorySteps {
 
     @Then("the bar still has {int} customers")
     public void the_bar_is_fully_booked(int numberOfPeople) {
-        assertEquals(bar.getNumberOfCustomers(), numberOfPeople);
+        assertEquals(bar.getCustomers().size(), numberOfPeople);
     }
 
 }

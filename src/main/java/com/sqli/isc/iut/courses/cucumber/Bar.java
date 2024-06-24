@@ -1,5 +1,6 @@
 package com.sqli.isc.iut.courses.cucumber;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sqli.isc.iut.courses.exceptions.TooManyCustomersInBarException;
@@ -7,37 +8,56 @@ import com.sqli.isc.iut.courses.exceptions.TooManyCustomersInBarException;
 public class Bar {
 
     private int numberOfPlaces;
-    private int numberOfCustomers;
+    private List<Person> customers;
 
     public Bar(int numberOfPlaces) {
         this.numberOfPlaces = numberOfPlaces;
-        this.numberOfCustomers = 0;
+        this.customers = new ArrayList<>();
     }
 
-    public void addCustomers(List<String> customers) throws TooManyCustomersInBarException {
-        if (numberOfCustomers + customers.size() > numberOfPlaces) {
+    public void addCustomers(List<Person> newCustomers) throws TooManyCustomersInBarException {
+        if (customers.size() + newCustomers.size() > numberOfPlaces) {
             throw new TooManyCustomersInBarException();
         }
+    
+        this.customers.addAll(newCustomers);
+    }
 
-        for (String customer: customers) {
-            numberOfCustomers++;
+    public double command(List<Person> customers, double pricePerCocktail, Person payer, int nbGlass) {
+        double totalCost = pricePerCocktail * customers.size() * nbGlass;
+    
+        if (payer != null) {
+            // Payer pays for everyone
+            payer.setAmountToPay(payer.getAmountToPay() + totalCost);
+            for (Person customer : customers) {
+                customer.setGlassConsumed(customer.getGlassConsumed() + nbGlass);
+            }
+        } else {
+            // Each customer pays for their own drinks
+            for (Person customer : customers) {
+                customer.setAmountToPay(customer.getAmountToPay() + pricePerCocktail * nbGlass);
+                customer.setGlassConsumed(customer.getGlassConsumed() + nbGlass);
+            }
         }
-        
+    
+        return totalCost;
     }
 
     public int getNumberOfPlaces() {
-        return numberOfPlaces;
+        return this.numberOfPlaces;
     }
 
     public void setNumberOfPlaces(int numberOfPlaces) {
         this.numberOfPlaces = numberOfPlaces;
     }
 
-    public int getNumberOfCustomers() {
-        return numberOfCustomers;
+    public List<Person> getCustomers() {
+        return this.customers;
     }
 
-    public void setNumberOfCustomers(int numberOfCustomers) {
-        this.numberOfCustomers = numberOfCustomers;
+    public void setCustomers(List<Person> customers) {
+        this.customers = customers;
     }
+
+  
 }
