@@ -52,7 +52,7 @@ public class SecondStorySteps {
     public void customers_try_to_enter(int numberOfNewCustomers) {
         try {
             bar.addCustomers(customerLeblancAndPignon);
-          
+
             canEnter = true;
         } catch (TooManyCustomersInBarException e) {
             canEnter = false;
@@ -91,10 +91,10 @@ public class SecondStorySteps {
 
 
     @When("second story : {int} customers each order {int} cocktail of the month at {int}€")
-    public void customers_each_order_a_cocktail_of_the_month_at(int numberOfCustomers, int nbGlass, int pricePerCocktail) throws TooManyCustomersInBarException {        
+    public void customers_each_order_a_cocktail_of_the_month_at(int numberOfCustomers, int nbGlass, int pricePerCocktail) throws TooManyCustomersInBarException {
         this.pricePerCocktail = pricePerCocktail;
         this.nbGlass = nbGlass;
-        
+
         totalBill = bar.command(customerLeblancAndPignon, pricePerCocktail, leblancCustomer, nbGlass);
     }
 
@@ -106,8 +106,6 @@ public class SecondStorySteps {
 
     @When("second story : Mr. Leblanc pays the bill")
     public void mr_Leblanc_pays_the_bill() {
-        System.out.println("afezfezfezfze22222 " + (leblancCustomer.getGlassConsumed()));
-
         leblancCustomer.PayingTheBill();
     }
 

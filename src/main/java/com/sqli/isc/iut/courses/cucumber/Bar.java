@@ -19,13 +19,13 @@ public class Bar {
         if (customers.size() + newCustomers.size() > numberOfPlaces) {
             throw new TooManyCustomersInBarException();
         }
-    
+
         this.customers.addAll(newCustomers);
     }
 
     public double command(List<Person> customers, double pricePerCocktail, Person payer, int nbGlass) {
         double totalCost = pricePerCocktail * customers.size() * nbGlass;
-    
+
         if (payer != null) {
             // Payer pays for everyone
             payer.setAmountToPay(payer.getAmountToPay() + totalCost);
@@ -39,7 +39,7 @@ public class Bar {
                 customer.setGlassConsumed(customer.getGlassConsumed() + nbGlass);
             }
         }
-    
+
         return totalCost;
     }
 
@@ -59,5 +59,5 @@ public class Bar {
         this.customers = customers;
     }
 
-  
+
 }

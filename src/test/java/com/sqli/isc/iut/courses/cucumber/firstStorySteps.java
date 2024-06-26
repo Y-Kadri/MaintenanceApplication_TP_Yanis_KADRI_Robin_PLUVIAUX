@@ -1,10 +1,10 @@
 package com.sqli.isc.iut.courses.cucumber;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sqli.isc.iut.courses.exceptions.TooManyCustomersInBarException;
 
@@ -21,6 +21,7 @@ public class FirstStorySteps {
     public void the_bar_has_people(int numberOfPeople) throws TooManyCustomersInBarException {
         bar = new Bar(10);
         List<Person> presentCustomersGiven = new ArrayList<>();
+        int numberOfFutureCustomers = 2;
 
         // Actual customer
         for (int i = 0; i < numberOfPeople; i++) {
@@ -30,7 +31,7 @@ public class FirstStorySteps {
         bar.addCustomers(presentCustomersGiven);
 
         //Futur customer
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < numberOfFutureCustomers; i++) {
           Person personIsAlreadyPresent = new Person("new " + String.valueOf(i + 1), 50.0, 2);
           futureCustomers.add(personIsAlreadyPresent);
       }
@@ -40,7 +41,6 @@ public class FirstStorySteps {
     public void customers_try_to_enter(int numberOfNewCustomers) {
         try {
             bar.addCustomers(futureCustomers);
-          
             canEnter = true;
         } catch (TooManyCustomersInBarException e) {
             canEnter = false;
